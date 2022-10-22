@@ -30,12 +30,53 @@ The reason for that is that the random numbers generated through arithmetic meth
 For this challenge, you are asked to:
 
 1. Write a paragraph to explain how can you use a quantum system/concept to generate a random bitstring.
+generating a random bitstring using quantum concepts : 
+
+so to generate a random number we can use qubits , a large number of qubits 
+that we initialise in a superposition state , as an addition we use a normal python list
+or a classicalregister and put the quantum register and the classical register ( or the 
+list) in one single quantum circuit 
+and then we measure the state of the qubit and put the result in an index of that classical 
+register each time . 
 
 2. Implement the ideas that you came up with in the above paragraph by coding a quantum circuit in Qiskit and execute it on a simulator `qasm_simulator`.
 
+#Question2: 
+#we can use 5 bits to test 
+#decalring a quantum register with one bit 
+qreg = QuantumRegister(1)
+#decalring a classical register 
+creg = ClassicalRegister(5)
+qc = QuantumCircuit(qreg, creg)
+
+qc.h(0)
+
+qc.measure(0, 0) #measuring the first qubit and putting it in the first case of the classical register 
+qc.measure(0, 1) 
+qc.measure(0, 2) 
+qc.measure(0, 3) 
+qc.measure(0, 4) 
+ 
+def execute(circuit, shots):
+
+    backend = Aer.get_backend("qasm_simulator")
+
+    results = backend.run(transpile(circuit, backend), shots = shots).result()
+    return results.get_counts()
+
+
+res=execute(qc, shots = 10)
+print(res)
+qc.draw()
+#end of solution 
 3. Try to execute your circuit on a fake noisy backend. What do you observe? Compare the results you got from the simulator and from the fake noisy backend (you can use a metric called `entropy`). Try to explain the difference?
 
 4. Try to come up with a list of ideas to improve the results that you got in task (3)?
+Q4:
+to improve the results we can :
+1-use a lot of qubits at once in the quantum register
+2-use a loop and generate the result of multiple qubits
+3-concatinate a small number of random result and get a bigger number 
 
 5. Implement one (or more :)) of the ideas that you came up with in task (4) and try to improve the results of task (3).
 
